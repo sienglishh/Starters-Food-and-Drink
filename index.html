@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thẻ Từ Vựng Tiếng Anh - Food & Drink</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Fredoka', 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            color: #e65100;
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #e65100;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #e65100;
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #e65100;
+        }
+
+        .flashcards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: transparent;
+            height: 260px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            border-radius: 24px;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            border: 4px solid #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .card-front {
+            background: #ffffff;
+            color: #333;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #ffefba 0%, #ffffff 100%);
+            color: #333;
+            transform: rotateY(180deg);
+        }
+
+        .icon-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            margin-top: 5px;
+            background-color: #fff3e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .icon-circle {
+            transform: scale(1.15) rotate(8deg);
+        }
+
+        .word-en {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ef6c00;
+            margin-bottom: 2px;
+        }
+
+        .word-vi {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+
+        .ipa {
+            font-size: 0.85rem;
+            color: #666;
+            font-family: sans-serif;
+            background: #f5f5f5;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-bottom: 5px;
+        }
+
+        .sound-btn {
+            background: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #e65100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s;
+        }
+
+        .sound-btn:active {
+            transform: scale(0.9);
+        }
+
+        .hint {
+            font-size: 0.75rem;
+            color: #aaa;
+        }
+
+        @media (max-width: 600px) {
+            .flashcards-container {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 15px;
+            }
+            .card {
+                height: 240px;
+            }
+            .word-en {
+                font-size: 1.2rem;
+            }
+            .word-vi {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🍕 Food & Drink 🧃</h1>
+        <p class="subtitle">Thẻ Lật Từ Vựng Tiếng Anh - Thức Ăn & Đồ Uống</p>
+        <div class="controls">
+            <button class="btn" onclick="flipAll()">🔄 Lật tất cả thẻ</button>
+            <button class="btn" onclick="resetCards()">✨ Làm mới</button>
+        </div>
+    </header>
+
+    <div class="flashcards-container" id="cardsGrid"></div>
+
+    <script>
+        const vocabulary = [
+            { en: "apple", vi: "quả táo", ipa: "/ˈæp.əl/", icon: "🍎" },
+            { en: "banana", vi: "quả chuối", ipa: "/bəˈnɑː.nə/", icon: "🍌" },
+            { en: "bean", vi: "hạt đậu", ipa: "/biːn/", icon: "🫘" },
+            { en: "bread", vi: "bánh mì", ipa: "/bred/", icon: "🍞" },
+            { en: "breakfast", vi: "bữa sáng", ipa: "/ˈbrek.fəst/", icon: "🍳" },
+            { en: "burger", vi: "bánh hamburger", ipa: "/ˈbɜː.ɡər/", icon: "🍔" },
+            { en: "cake", vi: "bánh ngọt", ipa: "/keɪk/", icon: "🍰" },
+            { en: "candy (UK sweet(s))", vi: "kẹo", ipa: "/ˈkæn.di/", icon: "🍬" },
+            { en: "carrot", vi: "củ cà rốt", ipa: "/ˈkær.ət/", icon: "🥕" },
+            { en: "chicken", vi: "thịt gà", ipa: "/ˈtʃɪk.ɪn/", icon: "🍗" },
+            { en: "chips (US fries)", vi: "khoai tây chiên", ipa: "/tʃɪps/", icon: "🍟" },
+            { en: "chocolate", vi: "socola", ipa: "/ˈtʃɒk.lət/", icon: "🍫" },
+            { en: "coconut", vi: "quả dừa", ipa: "/ˈkəʊ.kə.nʌt/", icon: "🥥" },
+            { en: "dinner", vi: "bữa tối", ipa: "/ˈdɪn.ər/", icon: "🍽️" },
+            { en: "drink", vi: "uống / đồ uống", ipa: "/drɪŋk/", icon: "🥤" },
+            { en: "eat", vi: "ăn", ipa: "/iːt/", icon: "🍽️" },
+            { en: "egg", vi: "quả trứng", ipa: "/eɡ/", icon: "🥚" },
+            { en: "fish", vi: "cá / thịt cá", ipa: "/fɪʃ/", icon: "🐟" },
+            { en: "food", vi: "thức ăn", ipa: "/fuːd/", icon: "🍲" },
+            { en: "fries (UK chips)", vi: "khoai tây chiên", ipa: "/fraɪz/", icon: "🍟" },
+            { en: "fruit", vi: "trái cây", ipa: "/fruːt/", icon: "🍉" },
+            { en: "grape", vi: "quả nho", ipa: "/ɡreɪp/", icon: "🍇" },
+            { en: "ice cream", vi: "kem", ipa: "/ˌaɪs ˈkriːm/", icon: "🍦" },
+            { en: "juice", vi: "nước ép", ipa: "/dʒuːs/", icon: "🧃" },
+            { en: "kiwi", vi: "quả kiwi", ipa: "/ˈkiː.wiː/", icon: "🥝" },
+            { en: "lemon", vi: "quả chanh vàng", ipa: "/ˈlem.ən/", icon: "🍋" },
+            { en: "lemonade", vi: "nước chanh", ipa: "/ˌlem.əˈneɪd/", icon: "🍹" },
+            { en: "lime", vi: "quả chanh xanh", ipa: "/laɪm/", icon: "🍋‍🟩" },
+            { en: "lunch", vi: "bữa trưa", ipa: "/lʌntʃ/", icon: "🍱" },
+            { en: "mango", vi: "quả xoài", ipa: "/ˈmæŋ.ɡəʊ/", icon: "🥭" },
+            { en: "meat", vi: "thịt", ipa: "/miːt/", icon: "🥩" },
+            { en: "meatballs", vi: "thịt viên", ipa: "/ˈmiːt.bɔːlz/", icon: "🧆" },
+            { en: "milk", vi: "sữa", ipa: "/mɪlk/", icon: "🥛" },
+            { en: "onion", vi: "củ hành tây", ipa: "/ˈʌn.jən/", icon: "🧅" },
+            { en: "orange", vi: "quả cam", ipa: "/ˈɒr.ɪndʒ/", icon: "🍊" },
+            { en: "pea", vi: "hạt đậu hà lan", ipa: "/piː/", icon: "🫛" },
+            { en: "pear", vi: "quả lê", ipa: "/peər/", icon: "🍐" },
+            { en: "pie", vi: "bánh nướng", ipa: "/paɪ/", icon: "🥧" },
+            { en: "pineapple", vi: "quả dứa", ipa: "/ˈpaɪnˌæp.əl/", icon: "🍍" },
+            { en: "potato", vi: "củ khoai tây", ipa: "/pəˈteɪ.təʊ/", icon: "🥔" },
+            { en: "rice", vi: "cơm, gạo", ipa: "/raɪs/", icon: "🍚" },
+            { en: "sausage", vi: "xúc xích", ipa: "/ˈsɒs.ɪdʒ/", icon: "🌭" },
+            { en: "sweet(s) (US candy)", vi: "kẹo", ipa: "/swiːt/", icon: "🍬" },
+            { en: "tomato", vi: "quả cà chua", ipa: "/təˈmɑː.təʊ/", icon: "🍅" },
+            { en: "water", vi: "nước uống", ipa: "/ˈwɔː.tər/", icon: "💧" },
+            { en: "watermelon", vi: "quả dưa hấu", ipa: "/ˈwɔː.təˌmel.ən/", icon: "🍉" }
+        ];
+
+        const container = document.getElementById('cardsGrid');
+
+        function createCards() {
+            container.innerHTML = '';
+            vocabulary.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = (e) => {
+                    if (!e.target.closest('.sound-btn')) {
+                        card.classList.toggle('flipped');
+                    }
+                };
+
+                const cleanWordForSpeech = item.en.split('/')[0].split('(')[0].trim();
+
+                card.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="icon-circle">${item.icon}</div>
+                            <div class="word-en">${item.en}</div>
+                            <div class="ipa">${item.ipa}</div>
+                            <button class="sound-btn" onclick="speak('${cleanWordForSpeech}', event)" title="Nghe phát âm">🔊</button>
+                            <span class="hint">Chạm để lật</span>
+                        </div>
+                        <div class="card-back">
+                            <div class="icon-circle">${item.icon}</div>
+                            <div class="word-vi">${item.vi}</div>
+                            <div class="word-en" style="font-size: 1.1rem; color: #555;">${item.en}</div>
+                            <button class="sound-btn" onclick="speak('${cleanWordForSpeech}', event)" title="Nghe phát âm">🔊</button>
+                            <span class="hint">Chạm để lật</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function speak(text, event) {
+            if (event) event.stopPropagation();
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                alert("Trình duyệt không hỗ trợ đọc âm!");
+            }
+        }
+
+        let allFlipped = false;
+        function flipAll() {
+            const cards = document.querySelectorAll('.card');
+            allFlipped = !allFlipped;
+            cards.forEach(card => {
+                if (allFlipped) {
+                    card.classList.add('flipped');
+                } else {
+                    card.classList.remove('flipped');
+                }
+            });
+        }
+
+        function resetCards() {
+            allFlipped = false;
+            createCards();
+        }
+
+        createCards();
+    </script>
+</body>
+</html>
